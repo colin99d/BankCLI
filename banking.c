@@ -26,6 +26,7 @@ struct Transaction
 
 };
 void deposit(struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT], int active_user, int total_trans);
+void withdrawal(struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT], int active_user, int total_trans);
 void save(int total_users, int total_trans, struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT]);
 void load(int counts[3], struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT]);
 void print_users(int total_users, struct Person users[USER_LIMIT]);
@@ -84,13 +85,15 @@ int main (int argc, char *argv[])
                 save(total_users, total_trans, users, transactions);
                 break;
             case 2:
-                printf("Withdrawal not functional yet\n");
+                withdrawal(users, transactions, active_user, total_trans);
+                total_trans += 1;
+                save(total_users, total_trans, users, transactions);
                 break;
             case 3:
                 printf("Transfer not functional yet\n");
                 break;
             case 4:
-                printf("Current balance is: %.2f\n", users[active_user].balance);
+                printf("Current balance is: $%.2f\n", users[active_user].balance);
                 break;
             case 5:
                 exit(0);
@@ -262,4 +265,23 @@ void deposit(struct Person users[USER_LIMIT], struct Transaction transactions[TR
     strcpy(transactions[total_trans].to_username, "");
 
     users[active_user].balance += amount;
+}
+
+void withdrawal(struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT], int active_user, int total_trans) {
+    float amount;
+
+    printf("\nAmount to withdrawal:\n");
+    scanf("%f", &amount);
+
+    if (users[active_user].balance > amount) {
+        transactions[total_trans].amount = -amount;
+        transactions[total_trans].trans_date = time(NULL);
+        strcpy(transactions[total_trans].from_username, users[active_user].username);
+        strcpy(transactions[total_trans].to_username, "");
+
+        users[active_user].balance -= amount;
+    } else {
+        printf("You cannot withdrawal $%.2f, you only have $%.2f.", amount, users[active_user].balance);
+    }
+
 }
