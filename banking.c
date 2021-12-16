@@ -15,6 +15,7 @@ struct Person
     char username[STRING_LIMIT];
     char password[STRING_LIMIT];
     float balance;
+    int admin;
 };
 
 struct Transaction
@@ -75,6 +76,7 @@ int main (int argc, char *argv[])
     while(1==1) {
         system("clear");
         printf("What would you like to do?\n1. Deposit\n2. Withdrawal \n3. Transfer \n4. See Balance\n5. Exit\n");
+        //TODO: Add more commands for admin
         scanf("%d", &input);
         
         switch(input)
@@ -281,7 +283,6 @@ void withdrawal(struct Person users[USER_LIMIT], struct Transaction transactions
 
         users[active_user].balance -= amount;
     } else {
-        printf("You cannot withdrawal $%.2f, you only have $%.2f.", amount, users[active_user].balance);
+        printf("You cannot withdrawal $%.2f, you only have $%.2f.\n", amount, users[active_user].balance);
     }
-
 }
