@@ -17,6 +17,7 @@ void load(int counts[3], struct Person users[USER_LIMIT], struct Transaction tra
 void print_users(int total_users, struct Person users[USER_LIMIT]);
 int login(int total_users, struct Person users[USER_LIMIT]);
 int signup(int total_users, struct Person users[USER_LIMIT]);
+void wait_input(char* name, int show_message);
  
 int main (int argc, char *argv[])
 {
@@ -60,6 +61,10 @@ int main (int argc, char *argv[])
     while(1==1) {
         system("clear");
         printf("What would you like to do?\n1. Deposit\n2. Withdrawal \n3. Transfer \n4. See Balance\n5. Exit\n");
+        if (users[active_user].admin == 1) {
+            printf("\n-----Admin Options-----\n\n");
+            printf("");
+        }
         //TODO: Add more commands for admin
         scanf("%d", &input);
         
@@ -69,19 +74,23 @@ int main (int argc, char *argv[])
                 deposit(users, transactions, active_user, total_trans);
                 total_trans += 1;
                 save(total_users, total_trans, users, transactions);
+                wait_input("deposit", 1);
                 break;
             case 2:
                 withdrawal(users, transactions, active_user, total_trans);
                 total_trans += 1;
                 save(total_users, total_trans, users, transactions);
+                wait_input("withdrawal", 1);
                 break;
             case 3:
                 transfer(users, transactions, active_user, total_trans, total_users);
                 total_trans += 1;
                 save(total_users, total_trans, users, transactions);
+                wait_input("transfer", 1);
                 break;
             case 4:
                 printf("Current balance is: $%.2f\n", users[active_user].balance);
+                wait_input("", 0);
                 break;
             case 5:
                 exit(0);
@@ -89,7 +98,6 @@ int main (int argc, char *argv[])
                 printf("Invalid input\n");
         }
         // TODO: remove sleep when UI is more filled out
-        sleep(3);
     }
     
     return 0;
@@ -239,4 +247,14 @@ int signup(int total_users, struct Person users[USER_LIMIT])
 
     return 1;
 
+}
+
+void wait_input(char* name, int show_message) {
+    if (show_message == 1) {
+        printf("The %s was succesful. Press Enter to Continue\n", name);
+    } else {
+        printf("Press Enter to Continue\n");
+    }
+    fflush(stdin);
+    while (getchar() != '\n');
 }
