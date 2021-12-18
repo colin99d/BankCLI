@@ -14,6 +14,7 @@
 
 void save(int total_users, int total_trans, struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT]);
 void load(int counts[3], struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT]);
+void print_transactions(int total_trans, struct Transaction transactions[TRANS_LIMIT]);
 void print_users(int total_users, struct Person users[USER_LIMIT]);
 int login(int total_users, struct Person users[USER_LIMIT]);
 int signup(int total_users, struct Person users[USER_LIMIT]);
@@ -63,7 +64,7 @@ int main (int argc, char *argv[])
         printf("What would you like to do?\n1. Deposit\n2. Withdrawal \n3. Transfer \n4. See Balance\n5. Exit\n");
         if (users[active_user].admin == 1) {
             printf("\n-----Admin Options-----\n\n");
-            printf("");
+            printf("6. Users\n7. Transactions\n");
         }
         //TODO: Add more commands for admin
         scanf("%d", &input);
@@ -94,6 +95,22 @@ int main (int argc, char *argv[])
                 break;
             case 5:
                 exit(0);
+            case 6:
+                if (users[active_user].admin == 1) {
+                    print_users(total_users, users);
+                } else {
+                    printf("You are not an admin.\n");
+                }
+                wait_input("", 0);
+                break;
+            case 7:
+                if (users[active_user].admin == 1) {
+                    print_transactions(total_trans, transactions);
+                } else {
+                    printf("You are not an admin.\n");
+                }
+                wait_input("", 0);
+                break;
             default:
                 printf("Invalid input\n");
         }
@@ -153,6 +170,7 @@ void load(int counts[3], struct Person users[USER_LIMIT], struct Transaction tra
     while(fread(&input, sizeof(struct Person), 1, infile)) 
     {
         users[i].balance = input.balance;
+        users[i].admin = input.admin;
         strcpy(users[i].username, input.username);
         strcpy(users[i].password, input.password);
         ++i;
@@ -192,6 +210,21 @@ void print_users(int total_users, struct Person users[USER_LIMIT])
     for (i=0; i<total_users; ++i) 
     {
         printf("%s balance: $%.2f\n", users[i].username, users[i].balance);
+    }
+}
+
+void print_transactions(int total_trans, struct Transaction transactions[TRANS_LIMIT]) 
+{
+    int i;
+    //char buffer[20];
+
+    printf("Date\tAmount\tFrom\tTo\n");
+    printf("-------------------------\n");
+    for (i=0; i<total_trans; ++i)
+        //strftime(buffer, 20, "%Y-%m-%d", localtime(&transactions[i].trans_date));
+    {
+        
+        printf("date\t%.2f\t%s\t%s\n", transactions[i].amount, transactions[i].from_username,transactions[i].to_username);
     }
     
 }
@@ -240,6 +273,7 @@ int signup(int total_users, struct Person users[USER_LIMIT])
             return 0;
         }
     }
+    users[total_users].admin = 0;
     users[total_users].balance = 0.0;
     strcpy(users[total_users].username, user_user);
     strcpy(users[total_users].password, user_pass);
