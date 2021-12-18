@@ -1,9 +1,8 @@
 WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla -Werror
-COVERAGE = -fprofile-arcs -ftest-COVERAGE
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR)
 
-SRCS = banking.c
+SRCS = main.c user_operations.c
 
 OBJS = $(SRCS:%.c=%.o)
 

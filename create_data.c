@@ -16,7 +16,7 @@ int main ()
     FILE *outfile;
      
     // open file for writing
-    outfile = fopen ("user.dat", "w");
+    outfile = fopen ("data/user.dat", "w");
     if (outfile == NULL)
     {
         fprintf(stderr, "\nError opened file\n");
