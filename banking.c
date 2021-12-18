@@ -291,7 +291,7 @@ void withdrawal(struct Person users[USER_LIMIT], struct Transaction transactions
 }
 
 void transfer(struct Person users[USER_LIMIT], struct Transaction transactions[TRANS_LIMIT], int active_user, int total_trans, int total_users) {
-    struct Person to_users[total_users];
+    struct Person to_users[USER_LIMIT];
     struct Person to_user;
     float amount;
     int to_user_num;
