@@ -97,7 +97,6 @@ int main (int argc, char *argv[])
             default:
                 printf("Invalid input\n");
         }
-        // TODO: remove sleep when UI is more filled out
     }
     
     return 0;
